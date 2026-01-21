@@ -1,5 +1,7 @@
 ﻿Configuration MiscConfig{
     Import-DscResource -ModuleName "PSDesiredStateConfiguration"
+    Import-DscResource -ModuleName "SecurityPolicyDsc"
+
     Node Localhost {
     
 
@@ -30,7 +32,15 @@
         DestinationPath = "C:\ABC\dummy.txt"
     }
 
-    Script ShutdownRestriction
+    UserRightsAssignment ShutdownRestriction 
+    {
+        Identity = '*S-1-5-32-544' # BUILTIN\Administrators
+        Policy   = 'ShutdownTheSystem' 
+        Ensure   = 'Present'
+        Force    = $True
+    }
+
+<#    Script ShutdownRestriction
     {
         GetScript = {
             @{ Result = "Restrict shutdown to administrators" }
@@ -50,7 +60,7 @@
                 secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg /areas USER_RIGHTS
         }
     }
-    
+#>    
      Service EnsureTimeService
         {
             Name        = "w32time"
