@@ -39,7 +39,7 @@
         TestScript = {
             secedit /export /cfg C:\Windows\Temp\check.cfg
             $content = Get-Content C:\Windows\Temp\check.cfg
-            return ($content -match '^SeShutdownPrivilege = \*S-1-5-32-544$')
+            return [bool]($content -match '^SeShutdownPrivilege = \*S-1-5-32-544$')
         }
 
         SetScript = {
